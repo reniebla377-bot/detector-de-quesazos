@@ -39,12 +39,25 @@
     ajustar();
     window.onresize = ajustar;
 
-    // Quesos (coordenadas relativas al centro)
+    // Cargar imágenes reales de quesos
+    const img1 = new Image();
+    img1.src = "queso 1.jpg";
+
+    const img2 = new Image();
+    img2.src = "queso 2.jpg";
+
+    const img3 = new Image();
+    img3.src = "queso 3.jpg";
+
+    const img4 = new Image();
+    img4.src = "queso 4.jpg";
+
+    // Quesos con coordenadas e imagen
     const quesos = [
-        { nombre: "Queso Manchego", x: 120, y: -80 },
-        { nombre: "Queso Gouda", x: -150, y: 60 },
-        { nombre: "Queso Cheddar", x: 90, y: 140 },
-        { nombre: "Queso Brie", x: -100, y: -130 }
+        { nombre: "Queso 1", x: 120, y: -80, img: img1 },
+        { nombre: "Queso 2", x: -150, y: 60, img: img2 },
+        { nombre: "Queso 3", x: 90, y: 140, img: img3 },
+        { nombre: "Queso 4", x: -100, y: -130, img: img4 }
     ];
 
     // Radar
@@ -77,7 +90,7 @@
         ctx.lineTo(finX, finY);
         ctx.stroke();
 
-        // Dibujar quesos
+        // Dibujar quesos con imagen real
         for (const q of quesos) {
             const qx = cx + q.x;
             const qy = cy + q.y;
@@ -89,16 +102,14 @@
 
             const dif = Math.abs((angulo - angQ + 180) % 360 - 180);
 
+            const size = 70; // tamaño del queso
+
             if (dif < 5) {
-                ctx.fillStyle = "red";
-                ctx.beginPath();
-                ctx.arc(qx, qy, 10, 0, Math.PI * 2);
-                ctx.fill();
+                ctx.filter = "drop-shadow(0 0 25px red)";
+                ctx.drawImage(q.img, qx - size/2, qy - size/2, size, size);
+                ctx.filter = "none";
             } else {
-                ctx.fillStyle = "#00ff00";
-                ctx.beginPath();
-                ctx.arc(qx, qy, 6, 0, Math.PI * 2);
-                ctx.fill();
+                ctx.drawImage(q.img, qx - size/2, qy - size/2, size, size);
             }
         }
 
