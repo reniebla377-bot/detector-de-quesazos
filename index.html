@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Detector de Quesazos</title>
-     <meta charset="UTF-8">
-    <title>Detector de Quesazos</title>
 
     <style>
         body {
@@ -15,66 +13,37 @@
         canvas {
             display: block;
         }
+        h1, p {
+            color: white;
+            text-align: center;
+            font-family: Arial;
+        }
     </style>
 </head>
 
 <body>
     <h1>Bienvenido al Detector de Quesazos</h1>
     <p>Tu radar se instalará aquí.</p>
-    <canvas id="radar"></canvas>
-<body>
-    <h1>Bienvenido al Detector de Quesazos</h1>
-    <p>Tu radar se instalará aquí.</p>
+
     <canvas id="radar"></canvas>
 
-    <!-- AQUÍ VA EL SCRIPT -->
     <script>
-        // Ajustar canvas
-        const canvas = document.getElementById("radar");
-        const ctx = canvas.getContext("2d");
+    // Ajustar canvas
+    const canvas = document.getElementById("radar");
+    const ctx = canvas.getContext("2d");
 
-        function ajustar() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        ajustar();
-        window.onresize = ajustar;
+    function ajustar() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    ajustar();
+    window.onresize = ajustar;
 
-        // Radar
-        let angulo = 0;
+    // Quesos (coordenadas relativas al centro)
+    const quesos = [
+        { nombre: "Queso Manchego", x: 120, y: -80 },
+        { nombre: "Queso Gouda", x: -150, y: 60 },
+        { nombre: "Queso Cheddar", x: 90, y: 140 },
+        { nombre: "Queso Brie", x: -100, y: -130 }
+    ];
 
-        function dibujar() {
-            const cx = canvas.width / 2;
-            const cy = canvas.height / 2;
-
-            // Fondo
-            ctx.fillStyle = "black";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Círculos del radar
-            ctx.strokeStyle = "#00ff00";
-            ctx.lineWidth = 2;
-            for (let r = 50; r <= 300; r += 50) {
-                ctx.beginPath();
-                ctx.arc(cx, cy, r, 0, Math.PI * 2);
-                ctx.stroke();
-            }
-
-            // Línea de barrido
-            const rad = angulo * Math.PI / 180;
-            const finX = cx + Math.cos(rad) * 300;
-            const finY = cy + Math.sin(rad) * 300;
-
-            ctx.beginPath();
-            ctx.moveTo(cx, cy);
-            ctx.lineTo(finX, finY);
-            ctx.stroke();
-
-            angulo = (angulo + 2) % 360;
-            requestAnimationFrame(dibujar);
-        }
-
-        dibujar();
-    </script>
-</body>
-</html>
