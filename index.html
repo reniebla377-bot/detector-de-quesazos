@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Radar de Quesazos</title>
+    <title>Detector de Quesazos</title>
 
     <style>
         body {
@@ -23,6 +23,8 @@
 
 <body>
     <h1>Bienvenido al Detector de Quesazos</h1>
+    <p>Tu radar se instalará aquí.</p>
+
     <canvas id="radar"></canvas>
 
     <!-- SONIDO -->
@@ -55,76 +57,4 @@
         { nombre: "Queso 2", x: -250, y: 100, img: img2 },
         { nombre: "Queso 3", x: 180, y: 220, img: img3 },
         { nombre: "Queso 4", x: -180, y: -200, img: img4 },
-        { nombre: "Queso 5", x: 300, y: -50, img: img5 },
-        { nombre: "Queso 6", x: -320, y: 180, img: img6 },
-        { nombre: "Queso 7", x: 0, y: -300, img: img7 }
-    ];
-
-    // Sonido
-    const beep = document.getElementById("beep");
-
-    // Radar
-    let angulo = 0;
-
-    function dibujar() {
-        const cx = canvas.width / 2;
-        const cy = canvas.height / 2;
-
-        // Fondo
-        ctx.fillStyle = "black";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        // Círculos del radar (radio más grande)
-        ctx.strokeStyle = "#00ff00";
-        ctx.lineWidth = 2;
-        for (let r = 100; r <= 500; r += 50) {
-            ctx.beginPath();
-            ctx.arc(cx, cy, r, 0, Math.PI * 2);
-            ctx.stroke();
-        }
-
-        // Línea de barrido
-        const rad = angulo * Math.PI / 180;
-        const finX = cx + Math.cos(rad) * 500;
-        const finY = cy + Math.sin(rad) * 500;
-
-        ctx.beginPath();
-        ctx.moveTo(cx, cy);
-        ctx.lineTo(finX, finY);
-        ctx.stroke();
-
-        // Dibujar quesos con imagen real
-        for (const q of quesos) {
-            const qx = cx + q.x;
-            const qy = cy + q.y;
-
-            const dx = qx - cx;
-            const dy = qy - cy;
-            let angQ = Math.atan2(dy, dx) * 180 / Math.PI;
-            if (angQ < 0) angQ += 360;
-
-            const dif = Math.abs((angulo - angQ + 180) % 360 - 180);
-
-            const size = 80; // tamaño del queso
-
-            if (dif < 5) {
-                ctx.filter = "drop-shadow(0 0 30px red)";
-                ctx.drawImage(q.img, qx - size/2, qy - size/2, size, size);
-                ctx.filter = "none";
-
-                // Sonido
-                beep.currentTime = 0;
-                beep.play();
-            } else {
-                ctx.drawImage(q.img, qx - size/2, qy - size/2, size, size);
-            }
-        }
-
-        angulo = (angulo + 2) % 360;
-        requestAnimationFrame(dibujar);
-    }
-
-    dibujar();
-    </script>
-</body>
-</html>
+        { nombre: "Queso 5", x: 300, y:
