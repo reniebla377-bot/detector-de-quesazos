@@ -47,3 +47,66 @@
         { nombre: "Queso Brie", x: -100, y: -130 }
     ];
 
+    // Radar
+    let angulo = 0;
+
+    function dibujar() {
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+
+        // Fondo
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Círculos del radar
+        ctx.strokeStyle = "#00ff00";
+        ctx.lineWidth = 2;
+        for (let r = 50; r <= 300; r += 50) {
+            ctx.beginPath();
+            ctx.arc(cx, cy, r, 0, Math.PI * 2);
+            ctx.stroke();
+        }
+
+        // Línea de barrido
+        const rad = angulo * Math.PI / 180;
+        const finX = cx + Math.cos(rad) * 300;
+        const finY = cy + Math.sin(rad) * 300;
+
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(finX, finY);
+        ctx.stroke();
+
+        // Dibujar quesos
+        for (const q of quesos) {
+            const qx = cx + q.x;
+            const qy = cy + q.y;
+
+            const dx = qx - cx;
+            const dy = qy - cy;
+            let angQ = Math.atan2(dy, dx) * 180 / Math.PI;
+            if (angQ < 0) angQ += 360;
+
+            const dif = Math.abs((angulo - angQ + 180) % 360 - 180);
+
+            if (dif < 5) {
+                ctx.fillStyle = "red";
+                ctx.beginPath();
+                ctx.arc(qx, qy, 10, 0, Math.PI * 2);
+                ctx.fill();
+            } else {
+                ctx.fillStyle = "#00ff00";
+                ctx.beginPath();
+                ctx.arc(qx, qy, 6, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        angulo = (angulo + 2) % 360;
+        requestAnimationFrame(dibujar);
+    }
+
+    dibujar();
+    </script>
+</body>
+</html>
