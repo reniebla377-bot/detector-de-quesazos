@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Detector de Quesazos</title>
+    <title>Radar de Quesazos</title>
 
     <style>
         body {
@@ -25,6 +25,9 @@
     <h1>Bienvenido al Detector de Quesazos</h1>
     <canvas id="radar"></canvas>
 
+    <!-- SONIDO -->
+    <audio id="beep" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"></audio>
+
     <script>
     // Ajustar canvas
     const canvas = document.getElementById("radar");
@@ -38,25 +41,27 @@
     window.onresize = ajustar;
 
     // Cargar imágenes reales de quesos
-    const img1 = new Image();
-    img1.src = "queso 1.jpg";
-
-    const img2 = new Image();
-    img2.src = "queso 2.jpg";
-
-    const img3 = new Image();
-    img3.src = "queso 3.jpg";
-
-    const img4 = new Image();
-    img4.src = "queso 4.jpg";
+    const img1 = new Image(); img1.src = "queso_1.jpg";
+    const img2 = new Image(); img2.src = "queso_2.jpg";
+    const img3 = new Image(); img3.src = "queso_3.jpg";
+    const img4 = new Image(); img4.src = "queso_4.jpg";
+    const img5 = new Image(); img5.src = "queso5.jpg";
+    const img6 = new Image(); img6.src = "queso6.jpg";
+    const img7 = new Image(); img7.src = "queso7.jpg";
 
     // Quesos con coordenadas e imagen
     const quesos = [
-        { nombre: "Queso 1", x: 120, y: -80, img: img1 },
-        { nombre: "Queso 2", x: -150, y: 60, img: img2 },
-        { nombre: "Queso 3", x: 90, y: 140, img: img3 },
-        { nombre: "Queso 4", x: -100, y: -130, img: img4 }
+        { nombre: "Queso 1", x: 200, y: -150, img: img1 },
+        { nombre: "Queso 2", x: -250, y: 100, img: img2 },
+        { nombre: "Queso 3", x: 180, y: 220, img: img3 },
+        { nombre: "Queso 4", x: -180, y: -200, img: img4 },
+        { nombre: "Queso 5", x: 300, y: -50, img: img5 },
+        { nombre: "Queso 6", x: -320, y: 180, img: img6 },
+        { nombre: "Queso 7", x: 0, y: -300, img: img7 }
     ];
+
+    // Sonido
+    const beep = document.getElementById("beep");
 
     // Radar
     let angulo = 0;
@@ -69,10 +74,10 @@
         ctx.fillStyle = "black";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Círculos del radar
+        // Círculos del radar (radio más grande)
         ctx.strokeStyle = "#00ff00";
         ctx.lineWidth = 2;
-        for (let r = 50; r <= 300; r += 50) {
+        for (let r = 100; r <= 500; r += 50) {
             ctx.beginPath();
             ctx.arc(cx, cy, r, 0, Math.PI * 2);
             ctx.stroke();
@@ -80,8 +85,8 @@
 
         // Línea de barrido
         const rad = angulo * Math.PI / 180;
-        const finX = cx + Math.cos(rad) * 300;
-        const finY = cy + Math.sin(rad) * 300;
+        const finX = cx + Math.cos(rad) * 500;
+        const finY = cy + Math.sin(rad) * 500;
 
         ctx.beginPath();
         ctx.moveTo(cx, cy);
@@ -100,12 +105,16 @@
 
             const dif = Math.abs((angulo - angQ + 180) % 360 - 180);
 
-            const size = 70; // tamaño del queso
+            const size = 80; // tamaño del queso
 
             if (dif < 5) {
-                ctx.filter = "drop-shadow(0 0 25px red)";
+                ctx.filter = "drop-shadow(0 0 30px red)";
                 ctx.drawImage(q.img, qx - size/2, qy - size/2, size, size);
                 ctx.filter = "none";
+
+                // Sonido
+                beep.currentTime = 0;
+                beep.play();
             } else {
                 ctx.drawImage(q.img, qx - size/2, qy - size/2, size, size);
             }
